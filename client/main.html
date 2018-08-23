@@ -1,0 +1,16 @@
+<head>
+  <title>app</title>
+</head>
+
+<body>
+  <h1>Welcome to Meteor!</h1>
+
+  {{> image}}
+</body>
+
+<template name="image">
+
+  {{> quickForm collection=productsCollection id="insertProductForm" type="insert" }}
+
+</template>
+
