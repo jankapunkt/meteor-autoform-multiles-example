@@ -23,3 +23,5 @@ ostrio:autoform-files
 ostrio:files
 aldeed:collection2@3.0.0
 aldeed:collection2-core
+dburles:mongo-collection-instances
+aldeed:autoform

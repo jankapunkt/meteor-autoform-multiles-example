@@ -1,16 +1,36 @@
 <head>
-  <title>app</title>
+    <title>app</title>
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
-
-  {{> image}}
+{{> image}}
 </body>
 
 <template name="image">
 
-  {{> quickForm collection=productsCollection id="insertProductForm" type="insert" }}
 
+    {{#if form "insert"}}
+        {{> quickForm collection=productsCollection id="insertProductForm" type="insert" }}
+        <button class="btn btn-default cancel-button">Cancel</button>
+        {{else}}
+        <button class="btn btn-default add-button">Add</button>
+    {{/if}}
+
+    {{#if form "update"}}
+        {{>  quickForm collection=productsCollection doc=product id="updateProductForm" type="update"}}
+        <button class="btn btn-default cancel-button">Cancel</button>
+    {{/if}}
+
+    <table class="table table-bordered">
+        {{#each products}}
+            <tr>
+                <td>{{this.title}}</td>
+                <td>{{this.pictures.length}}</td>
+                <td>
+                    <button class="btn btn-default edit-button" data-id="{{this._id}}">Edit</button>
+                </td>
+            </tr>
+        {{/each}}
+    </table>
 </template>
 

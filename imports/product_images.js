@@ -5,10 +5,7 @@ import { FilesCollection } from 'meteor/ostrio:files'
 export const ProductImages = new FilesCollection({
 	// debug: true,
 	collectionName: "ProductImages",
-	storagePath() { 
-		return (Meteor.settings.publicPath + Meteor.settings.productImagesPath
-	)},
-	allowClientCode: true, // Required to let you remove uploaded file
+	// allowClientCode: true, // Required to let you remove uploaded file
 
 	onBeforeUpload(file) {
 		// Allow upload files under 20MB, and only in png/jpg/jpeg formats
@@ -25,12 +22,13 @@ if (Meteor.isClient) {
 }
 
 if (Meteor.isServer) {
+	ProductImages.denyClient()
   Meteor.publish('images.all', () => {
     return ProductImages.collection.find({})
   })
 }
-
-global.ProductImages = ProductImages
+// console.log(ProductImages.collection)
+// global.ProductImages = ProductImages
 
 
 

@@ -13,17 +13,37 @@ SimpleSchema.setDefaultMessages({
 
 
 export const Products = new Mongo.Collection("Products")
+Products.allow({
+  insert() { return true },
+  update() { return true },
+  remove() { return true }
+})
 
-const ProductPicturesSchema = new SimpleSchema({
-  position: {
-    type: Number,
-    label: "Position",
-    defaultValue: 0,
-    autoform: {
-      type: 'hidden',
-    }
+const multiSchema = new SimpleSchema({
+  title: {
+    type:String,
   },
-  imageId: {
+  pictures: {
+    type: Array,
+  },
+  'pictures.$': {
+    type: String,
+    label: false,
+    autoform: {
+      afFieldInput: {
+        type: 'fileUpload',
+        collection: 'ProductImages',
+        multiple: "multiple",
+        // uploadTemplate: 'uploadField', // <- not working with custom templates yet!
+        // previewTemplate: 'uploadPreview' // <- Optional
+      }
+    }
+  }
+}, {tracker: Tracker})
+
+
+const singleSchema = new SimpleSchema({
+  pictures: {
     type: String,
     optional: true,
     label: false,
@@ -31,30 +51,15 @@ const ProductPicturesSchema = new SimpleSchema({
       afFieldInput: {
         type: 'fileUpload',
         collection: 'ProductImages',
+        multiple: "multiple",
         // uploadTemplate: 'uploadField', // <- Optional
         // previewTemplate: 'uploadPreview' // <- Optional
       }
     }
   }
- })
-
-
-Products.schema = new SimpleSchema({
-  title: {
-    type: String,
-    label: "Title",
-    max: 200
-  },
-  pictures: {
-    type: Array,
-    optional: true
-  },
-  'pictures.$': {
-    type: ProductPicturesSchema,
-    optional: true,
-    label: false
-  }
 }, {tracker: Tracker})
 
+
+Products.schema = multiSchema
 Products.attachSchema(Products.schema)
 
